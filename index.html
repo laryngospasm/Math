@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>לוח הכפל עד 100</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="לוח הכפל">
+<meta name="theme-color" content="#eef6ff">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef6ff;--card:#fff;--ink:#1f2a44;--mute:#5d6b8a;--pri:#5b4bdb;--pri-t:#fff;--ok:#1f9d63;--okbg:#d9f5e7;--bad:#d6453d;--badbg:#fde3e1;--sun:#ffc83d;--line:#d5e1f5;--hl:#fff1c2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a2e;--card:#1e2745;--ink:#eef1fb;--mute:#a5b0d0;--pri:#8c7dff;--pri-t:#12102b;--ok:#4fd19a;--okbg:#17382c;--bad:#ff7d75;--badbg:#401c1b;--line:#33406a;--hl:#4a4020}}
+:root[data-theme="dark"]{--bg:#141a2e;--card:#1e2745;--ink:#eef1fb;--mute:#a5b0d0;--pri:#8c7dff;--pri-t:#12102b;--ok:#4fd19a;--okbg:#17382c;--bad:#ff7d75;--badbg:#401c1b;--line:#33406a;--hl:#4a4020}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Rubik',Arial,sans-serif;font-size:18px;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:28px;font-weight:800;margin:8px 0 4px}
+p.sub{margin:0 0 14px;color:var(--mute)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1}
+button{font:inherit;cursor:pointer;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 12px;font-weight:600}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+button.on{background:var(--pri);color:var(--pri-t);border-color:var(--pri)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chips button{min-width:46px}
+.grid{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;direction:ltr}
+.grid button{padding:6px 0;font-size:14px;border-radius:8px;border-width:1px;min-height:34px}
+.grid .h{background:var(--pri);color:var(--pri-t);border-color:var(--pri);font-weight:800}
+.grid .hl{background:var(--hl)}
+.grid .sel{background:var(--sun);color:#1f2a44;border-color:var(--sun);font-weight:800}
+.big{font-size:44px;font-weight:800;text-align:center;direction:ltr;margin:6px 0}
+.eq{display:flex;align-items:center;justify-content:center;gap:10px;direction:ltr;font-size:44px;font-weight:800;margin:14px 0}
+input.ans{width:130px;font:inherit;font-size:40px;font-weight:800;text-align:center;border:3px solid var(--line);border-radius:16px;background:var(--bg);color:var(--ink);padding:4px}
+.go{display:block;margin:0 auto;background:var(--pri);color:var(--pri-t);border-color:var(--pri);font-size:20px;padding:12px 36px}
+.msg{min-height:34px;text-align:center;font-weight:600;margin-top:10px;border-radius:12px;padding:4px 8px}
+.msg.ok{background:var(--okbg);color:var(--ok)}.msg.no{background:var(--badbg);color:var(--bad)}
+.bar{height:12px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;background:var(--sun);width:0;transition:width .3s}
+.stars{font-size:34px;text-align:center;letter-spacing:4px}
+.row{display:flex;justify-content:space-between;color:var(--mute);font-size:16px}
+ul.miss{list-style:none;padding:0;margin:8px 0;display:flex;flex-wrap:wrap;gap:8px}
+ul.miss li{direction:ltr;background:var(--badbg);color:var(--bad);border-radius:10px;padding:4px 10px;font-weight:600}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+.back{display:block;margin:14px auto 0;font-size:16px;padding:8px 18px}
+.seq{display:flex;gap:6px;direction:ltr;justify-content:center;margin:14px 0}
+.seq>div{flex:1;min-width:0;max-width:78px;text-align:center;font-size:clamp(18px,5.5vw,30px);font-weight:800;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:10px 0}
+.seq input{width:100%;font:inherit;font-weight:800;text-align:center;border:3px solid var(--sun);border-radius:12px;background:var(--card);color:var(--ink);padding:0;min-width:0}
+.fact.pk{border-inline-start-color:var(--sun)}
+.fact{background:var(--bg);border:2px solid var(--line);border-inline-start:8px solid var(--ok);border-radius:14px;padding:10px 14px;margin-top:12px;animation:pop .3s ease-out}
+.fact b{display:block}
+.fact a{color:var(--pri);font-weight:600}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.fact{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>לוח הכפל עד 100</h1>
+<p class="sub">קודם מסתכלים בטבלה, אחר כך מתרגלים!</p>
+<div class="tabs" role="tablist">
+  <button id="t1" class="on" onclick="tab(1)">הטבלה</button>
+  <button id="t2" onclick="tab(2)">תרגול</button>
+  <button id="t3" onclick="tab(3)">סדרות</button>
+</div>
+
+<section id="p1">
+  <div class="card">
+    <div class="big" id="eqShow">לחצו על מספר בטבלה</div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="p2" hidden>
+  <div class="card" id="setup">
+    <b>איזה סוג תרגילים?</b>
+    <div class="chips" id="modes"></div>
+    <b>באיזו טבלה מתרגלים?</b>
+    <div class="chips" id="chips"></div>
+    <button class="go" onclick="start()">יוצאים לדרך</button>
+  </div>
+  <div class="card" id="quiz" hidden>
+    <div class="row"><span id="qn"></span><span id="sc"></span></div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="eq"><span id="qa"></span><span id="qop">×</span><span id="qb"></span><span>=</span>
+      <input class="ans" id="ans" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="התשובה"></div>
+    <button class="go" id="chk" onclick="check()">בדיקה</button>
+    <div class="msg" id="msg" aria-live="polite"></div>
+    <div id="cardBox"></div>
+    <button class="back" onclick="again()">חזרה לתפריט התרגול</button>
+  </div>
+  <div class="card" id="done" hidden>
+    <div class="stars" id="stars"></div>
+    <div class="big" id="final"></div>
+    <div id="missBox" hidden><b>כדאי לחזור על:</b><ul class="miss" id="miss"></ul></div>
+    <button class="go" onclick="again()">עוד סבב</button>
+  </div>
+</section>
+
+<section id="p3" hidden>
+  <div class="card" id="sSetup">
+    <b>איזו סדרה?</b>
+    <div class="chips" id="sdir"></div>
+    <b>באיזו קפיצה?</b>
+    <div class="chips" id="schips"></div>
+    <button class="go" onclick="sStart()">יוצאים לדרך</button>
+  </div>
+  <div class="card" id="sQuiz" hidden>
+    <div class="row"><span id="sqn"></span><span id="ssc"></span></div>
+    <div class="bar"><i id="sbar"></i></div>
+    <div>השלימו את המספר החסר בסדרה</div>
+    <div class="seq" id="seqRow"></div>
+    <button class="go" id="sChk" onclick="sCheck()">בדיקה</button>
+    <div class="msg" id="sMsg" aria-live="polite"></div>
+    <div id="sCard"></div>
+    <button class="back" onclick="sBack()">חזרה לתפריט הסדרות</button>
+  </div>
+  <div class="card" id="sDone" hidden>
+    <div class="stars" id="sStars"></div>
+    <div class="big" id="sFinal"></div>
+    <div id="sMissBox" hidden><b>כדאי לחזור על הסדרות האלה:</b><ul class="miss" id="sMiss"></ul></div>
+    <button class="go" onclick="sBack()">עוד סבב</button>
+  </div>
+</section>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)};
+function tab(n){for(var i=1;i<=3;i++){$('p'+i).hidden=n!=i;$('t'+i).className=n==i?'on':''}}
+
+// ---- table
+var g=$('grid'),cells={};
+(function(){
+  var h=document.createElement('button');h.className='h';h.textContent='×';h.disabled=true;g.appendChild(h);
+  for(var c=1;c<=10;c++){var b=document.createElement('button');b.className='h';b.textContent=c;b.disabled=true;g.appendChild(b)}
+  for(var r=1;r<=10;r++){
+    var rh=document.createElement('button');rh.className='h';rh.textContent=r;rh.disabled=true;g.appendChild(rh);
+    for(var c=1;c<=10;c++){(function(r,c){
+      var b=document.createElement('button');b.textContent=r*c;b.setAttribute('aria-label',r+' כפול '+c+' שווה '+r*c);
+      b.onclick=function(){pick(r,c)};cells[r+'_'+c]=b;g.appendChild(b)})(r,c)}
+  }
+})();
+function pick(r,c){
+  for(var k in cells){cells[k].className=''}
+  for(var i=1;i<=10;i++){cells[r+'_'+i].className='hl';cells[i+'_'+c].className='hl'}
+  cells[r+'_'+c].className='sel';
+  $('eqShow').textContent=r+' × '+c+' = '+r*c;
+}
+
+// ---- practice
+var chosen=[],chips=$('chips');
+function mk(label,val){
+  var b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed','false');
+  b.onclick=function(){
+    if(val==0){chosen=[];[].forEach.call(chips.children,function(x){x.className='';x.setAttribute('aria-pressed','false')});
+      b.className='on';b.setAttribute('aria-pressed','true');chosen=[0];return}
+    chosen=chosen.filter(function(x){return x!=0});chips.firstChild.className='';
+    var i=chosen.indexOf(val);
+    if(i<0){chosen.push(val);b.className='on'}else{chosen.splice(i,1);b.className=''}
+    b.setAttribute('aria-pressed',i<0)};
+  chips.appendChild(b);
+}
+mk('ערבוב',0);for(var n=2;n<=10;n++)mk(n,n);
+
+var FACTS=[{"w": "ליונל מסי", "n": "ליונל מסי", "t": "ליונל מסי מארגנטינה זכה בגביע העולם בשנת 2022 וגם בכדור הזהב שמונה פעמים."}, {"w": "כריסטיאנו רונאלדו", "n": "כריסטיאנו רונאלדו", "t": "כריסטיאנו רונאלדו מפורטוגל כבש יותר מ-900 שערים במשחקים רשמיים בקריירה שלו."}, {"w": "פלה", "n": "פלה", "t": "פלה הברזילאי זכה בגביע העולם שלוש פעמים: ב-1958, ב-1962 וב-1970."}, {"w": "דייגו מראדונה", "n": "דייגו מראדונה", "t": "דייגו מראדונה הוביל את ארגנטינה לזכייה בגביע העולם 1986. השער המפורסם שלו מול אנגליה נקרא \"יד האלוהים\"."}, {"w": "ארן זהבי", "n": "ארן זהבי", "t": "ארן זהבי הוא מלך השערים של נבחרת ישראל בכל הזמנים."}, {"w": "מרדכי שפיגלר", "n": "מרדכי שפיגלר", "t": "מרדכי שפיגלר שיחק בגביע העולם 1970 במקסיקו, הפעם היחידה שנבחרת ישראל השתתפה בטורניר."}, {"w": "מנור סולומון", "n": "מנור סולומון", "t": "מנור סולומון כנף ישראלי, שיחק בקבוצות גדולות באירופה, כמו טוטנהאם האנגלית."}, {"w": "יוסי בניון", "n": "יוסי בניון", "t": "יוסי בניון הישראלי שיחק בכמה מהקבוצות הגדולות באנגליה: ליברפול, צ'לסי וארסנל."}, {"w": "אלי אוחנה", "n": "אלי אוחנה", "t": "אלי אוחנה אגדה של בית\"ר ירושלים, זכה בגביע המחזיקות באירופה עם מכלן הבלגית ב-1988."}, {"w": "חיים רביבו", "n": "חיים רביבו", "t": "חיים רביבו כדורגלן ישראלי, שיחק בספרד בסלטה ויגו ובטורקיה בפנרבחצ'ה."}, {"w": "טל בן חיים", "n": "טל בן חיים", "t": "טל בן חיים מגן ישראלי, שיחק בצ'לסי האנגלית."}, {"w": "מוחמד סלאח", "n": "מוחמד סלאח", "t": "מוחמד סלאח המצרי הוא כוכב ליברפול, וזכה איתה באליפות אנגליה."}, {"w": "קיליאן אמבפה", "n": "קיליאן אמבפה", "t": "קיליאן אמבפה מצרפת זכה בגביע העולם 2018 בגיל 19, וכבש שלושה שערים בגמר 2022."}, {"w": "ניימאר", "n": "ניימאר", "t": "ניימאר הברזילאי עקף את פלה והפך לכובש השערים הגדול ביותר בתולדות נבחרת ברזיל."}, {"w": "מירוסלב קלוזה", "n": "מירוסלב קלוזה", "t": "מירוסלב קלוזה הגרמני הוא כובש השערים הגדול בתולדות גביעי העולם, עם 16 שערים."}, {"w": "לב יאשין", "n": "לב יאשין", "t": "לב יאשין שוער ברית המועצות, הוא השוער היחיד שזכה בכדור הזהב."}, {"w": "לוקה מודריץ'", "n": "לוקה מודריץ'", "t": "לוקה מודריץ' הקרואטי הוביל את קרואטיה לגמר גביע העולם 2018 וקיבל את כדור הזהב."}, {"w": "מרטה", "n": "מרטה", "t": "מרטה הברזילאית כבשה 17 שערים בגביעי עולם, שיא בין כל הנשים."}, {"w": "יוהאן קרויף", "n": "יוהאן קרויף", "t": "יוהאן קרויף ההולנדי המציא תרגיל כדרור מפורסם שנקרא על שמו, \"פנייה של קרויף\"."}, {"w": "זינדין זידאן", "n": "זינדין זידאן", "t": "זינדין זידאן מצרפת כבש שני שערי ראש בגמר גביע העולם 1998 וניצח עם נבחרת צרפת את ברזיל."}, {"w": "רונאלדיניו", "n": "רונאלדיניו", "t": "רונאלדיניו הברזילאי זכה בגביע העולם 2002 ובכדור הזהב 2005."}, {"w": "אנדרס אינייסטה", "n": "אנדרס אינייסטה", "t": "אנדרס אינייסטה הספרדי כבש את שער הניצחון בגמר גביע העולם 2010."}, {"w": "ג'אנלואיג'י בופון", "n": "ג'אנלואיג'י בופון", "t": "ג'אנלואיג'י בופון השוער האיטלקי שיחק עד גיל 45 וזכה בגביע העולם 2006."}, {"w": "פרנץ בקנבאואר", "n": "פרנץ בקנבאואר", "t": "פרנץ בקנבאואר הגרמני זכה בגביע העולם גם כשחקן (1974) וגם כמאמן (1990)."}, {"w": "ארלינג האלנד", "n": "ארלינג האלנד", "t": "ארלינג האלנד הנורווגי כבש 36 שערים בעונה אחת בפרמייר ליג האנגלית (2022/23), שיא כל הזמנים."}, {"w": "לאמין ימאל", "n": "לאמין ימאל", "t": "לאמין ימאל הספרדי זכה באליפות אירופה 2024 עם נבחרת ספרד כשהיה בן 17 בלבד."}, {"w": "גביע אסיה 1964", "n": "נבחרת ישראל", "t": "נבחרת ישראל זכתה בגביע אסיה ב-1964, כשהטורניר נערך בישראל."}, {"w": "ז'וסט פונטיין", "n": "ז'וסט פונטיין", "t": "ז'וסט פונטיין הצרפתי כבש 13 שערים בגביע עולם אחד (1958), שיא שעדיין לא נשבר."}, {"w": "פרנץ פושקאש", "n": "פרנץ פושקאש", "t": "פרנץ פושקאש ההונגרי כבש 84 שערים ב-85 משחקים בנבחרת הונגריה."}, {"w": "ג'ורג' וואה", "n": "ג'ורג' וואה", "t": "ג'ורג' וואה מליבריה זכה בכדור הזהב ב-1995, ובהמשך הפך לנשיא ליבריה."}, {"w": "כרים בנזמה", "n": "כרים בנזמה", "t": "כרים בנזמה הצרפתי זכה בכדור הזהב בשנת 2022 עם ריאל מדריד."}, {"w": "רוברט לבנדובסקי", "n": "רוברט לבנדובסקי", "t": "רוברט לבנדובסקי הפולני כבש 5 שערים בתוך 9 דקות בלבד במשחק אחד של באיירן מינכן."}, {"w": "סון הונג-מין", "n": "סון הונג-מין", "t": "סון הונג-מין הדרום קוריאני זכה בנעל הזהב של הפרמייר ליג 2021/22 עם 23 שערים."}],seen=[],lastW='';
+try{seen=JSON.parse(localStorage.getItem('kefelSeen')||'[]')}catch(e){}
+function showCard(q){
+  var left=FACTS.filter(function(f){return seen.indexOf(f.w)<0});
+  if(!left.length){seen=[];left=FACTS.filter(function(f){return f.w!==lastW})}
+  var f=left[Math.floor(Math.random()*left.length)];
+  seen.push(f.w);lastW=f.w;
+  try{localStorage.setItem('kefelSeen',JSON.stringify(seen))}catch(e){}
+  $('cardBox').innerHTML='';
+  var d=document.createElement('div');d.className='fact';
+  var b=document.createElement('b');b.textContent='⚽ הידעת?';
+  var t=document.createElement('span');t.textContent=f.t+' ';
+  var a=document.createElement('a');a.href='https://he.wikipedia.org/w/index.php?search='+encodeURIComponent(f.w)+'&go=Go';a.target='_blank';a.rel='noopener noreferrer';a.textContent='לקריאה בוויקיפדיה';
+  d.appendChild(b);d.appendChild(t);d.appendChild(a);$('cardBox').appendChild(d);
+}
+function shuf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var mode='m',modes=$('modes');
+[['m','כפל ×'],['d','חילוק ÷'],['b','שניהם']].forEach(function(o){
+  var b=document.createElement('button');b.textContent=o[1];b.className=o[0]=='m'?'on':'';b.setAttribute('aria-pressed',o[0]=='m');
+  b.onclick=function(){mode=o[0];[].forEach.call(modes.children,function(x){x.className='';x.setAttribute('aria-pressed','false')});b.className='on';b.setAttribute('aria-pressed','true')};
+  modes.appendChild(b)});
+var Q=[],qi=0,score=0,miss=[],locked=false;
+function start(){
+  var pool=(chosen.length==0||chosen[0]==0)?[2,3,4,5,6,7,8,9,10]:chosen;
+  var all=[];pool.forEach(function(a){for(var b=1;b<=10;b++)all.push([a,b])});
+  Q=shuf(all).slice(0,10).map(function(p){
+    if(Math.random()<.5)p=[p[1],p[0]];
+    var div=mode=='d'||(mode=='b'&&Math.random()<.5);
+    return div?{a:p[0]*p[1],op:'÷',b:p[0],ans:p[1]}:{a:p[0],op:'×',b:p[1],ans:p[0]*p[1]}});
+  qi=0;score=0;miss=[];
+  $('setup').hidden=true;$('done').hidden=true;$('quiz').hidden=false;show();
+}
+function show(){
+  locked=false;var q=Q[qi];
+  $('qa').textContent=q.a;$('qop').textContent=q.op;$('qb').textContent=q.b;
+  $('qn').textContent='שאלה '+(qi+1)+' מתוך '+Q.length;$('sc').textContent='נכון: '+score;
+  $('bar').style.width=(qi/Q.length*100)+'%';
+  $('ans').value='';$('ans').disabled=false;$('chk').textContent='בדיקה';
+  $('msg').textContent='';$('msg').className='msg';$('cardBox').innerHTML='';$('ans').focus();
+}
+function check(){
+  if(locked){qi++;if(qi>=Q.length)finish();else show();return}
+  var q=Q[qi],v=$('ans').value.trim();
+  if(v===''){$('msg').className='msg no';$('msg').textContent='כתבו תשובה ואז לחצו על בדיקה';return}
+  locked=true;$('ans').disabled=true;
+  if(parseInt(v,10)===q.ans){score++;$('msg').className='msg ok';$('msg').textContent='נכון! כל הכבוד ⭐';showCard(q)}
+  else{miss.push(q.a+' '+q.op+' '+q.b+' = '+q.ans);$('msg').className='msg no';$('msg').textContent='כמעט! התשובה היא '+q.ans}
+  $('sc').textContent='נכון: '+score;
+  $('chk').textContent=qi==Q.length-1?'לסיום':'השאלה הבאה';$('chk').focus();
+}
+$('ans').addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+function finish(){
+  $('quiz').hidden=true;$('done').hidden=false;
+  var n=score>=9?3:score>=6?2:score>=3?1:0;
+  $('stars').textContent=n?'⭐'.repeat(n):'💪';
+  $('final').textContent=score+' מתוך '+Q.length;
+  $('missBox').hidden=!miss.length;
+  $('miss').innerHTML='';miss.forEach(function(m){var li=document.createElement('li');li.textContent=m;$('miss').appendChild(li)});
+}
+function again(){$('quiz').hidden=true;$('done').hidden=true;$('setup').hidden=false}
+
+// ---- sequences
+var PK=[{"t": "השם \"פוקימון\" הוא קיצור של המילים \"מפלצות כיס\" ביפנית.", "l": ["פוקימון"]}, {"t": "משחקי הפוקימון הראשונים יצאו ביפן ב-1996. היוצר שלהם, סאטושי טג'ירי, אהב בילדותו לאסוף חרקים.", "l": ["פוקימון", "סאטושי טג'ירי"]}, {"t": "בדור הראשון היו 151 פוקימונים. בולבסאור הוא מספר 1 במדריך הפוקימונים, ומיו הוא מספר 151.", "l": ["בולבסאור", "מיו"]}, {"t": "מג'יקארפ נחשב לפוקימון חלש, אבל ברמה 20 הוא מתפתח לגיאראדוס החזק.", "l": ["מג'יקארפ", "גיאראדוס"]}, {"t": "איווי יכול להתפתח לשמונה צורות שונות, ביניהן וופוריאון, ג'ולטיאון ופלריאון.", "l": ["איווי", "וופוריאון", "ג'ולטיאון", "פלריאון"]}, {"t": "פיקאצ'ו מתפתח מפיצ'ו, ובהמשך יכול להפוך לרייצ'ו.", "l": ["פיקאצ'ו", "פיצ'ו", "רייצ'ו"]}, {"t": "השם פיקאצ'ו מורכב מ\"פיקה\", קול ניצוץ חשמלי ביפנית, ומ\"צ'ו\", קול הצווחה של עכבר.", "l": ["פיקאצ'ו"]}, {"t": "יש 18 סוגים של פוקימונים, למשל אש, מים, עשב וחשמל.", "l": ["פוקימון"]}, {"t": "אש חזקה נגד עשב, עשב חזק נגד מים, ומים חזקים נגד אש.", "l": ["פוקימון"]}, {"t": "דיטו הוא פוקימון שיכול להפוך לכל פוקימון אחר.", "l": ["דיטו"]}, {"t": "מיוטו נוצר במעבדה מה-DNA של מיו.", "l": ["מיוטו", "מיו"]}, {"t": "סנורלקס אוהב לישון, ובמשחקים הוא יכול לחסום שביל שלם עד שמעירים אותו.", "l": ["סנורלקס"]}, {"t": "סדרת הטלוויזיה של הפוקימון החלה ביפן ב-1997. אש בן 10, והמסע שלו מתחיל בעיר פאלט.", "l": ["פוקימון", "אש קצ'ום"]}, {"t": "פוקימון גו יצא ב-2016 ושלח מיליוני אנשים לחפש פוקימונים ברחובות.", "l": ["פוקימון גו"]}, {"t": "במשחקי הדור השני, זהב וכסף, נוספו 100 פוקימונים חדשים.", "l": ["פוקימון זהב וכסף"]}, {"t": "קלפי הפוקימון יצאו לראשונה ביפן ב-1996.", "l": ["קלפי פוקימון"]}, {"t": "שלושת פוקימוני ההתחלה בדור הראשון הם בולבסאור, צ'רמנדר וסקווירטל.", "l": ["בולבסאור", "צ'רמנדר", "סקווירטל"]}, {"t": "הלהבה שבקצה הזנב של צ'רמנדר מראה כמה הוא חזק ובריא.", "l": ["צ'רמנדר"]}, {"t": "ג'יגליפאף שר שיר שמרדים את מי שמקשיב לו.", "l": ["ג'יגליפאף"]}, {"t": "וויילורד, אחד הפוקימונים הגדולים, באורך של כ-14.5 מטר.", "l": ["וויילורד"]}, {"t": "בכל שנה נערכת אליפות עולם בפוקימון.", "l": ["פוקימון"]}, {"t": "שלוש ציפורים אגדיות בדור הראשון: ארטיקונו של הקרח, זאפדוס של החשמל ומולטרס של האש.", "l": ["ארטיקונו", "זאפדוס", "מולטרס"]}, {"t": "בפוקימון יש כמה סוגי כדורים: פוקבול, גרייטבול ואולטרהבול. מאסטרבול תופס כל פוקימון בלי להיכשל.", "l": ["פוקבול"]}],memSeen={};
+function pickFact(pool,key){
+  var seen=memSeen[key];
+  if(!seen){try{seen=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){seen=[]}}
+  var left=[];pool.forEach(function(_,i){if(seen.indexOf(i)<0)left.push(i)});
+  if(!left.length){var last=seen[seen.length-1];seen=[];pool.forEach(function(_,i){if(i!==last)left.push(i)})}
+  var i=left[Math.floor(Math.random()*left.length)];seen.push(i);memSeen[key]=seen;
+  try{localStorage.setItem(key,JSON.stringify(seen))}catch(e){}
+  return pool[i];
+}
+function r(k){return Math.floor(Math.random()*k)}
+function chipRow(el,labels,onPick,multi){
+  labels.forEach(function(l,i){
+    var b=document.createElement('button');b.textContent=l[0];b.className=i==0?'on':'';b.setAttribute('aria-pressed',i==0);
+    b.onclick=function(){onPick(l[1],b,el)};el.appendChild(b)});
+}
+var sDir='u',sSel=[],sQ=[],si=0,ss=0,sLock=false,sMissL=[];
+var sdir=$('sdir'),schips=$('schips');
+chipRow(sdir,[['עולה','u'],['יורדת','d'],['שניהם','b'],['משולבת','m']],function(v,b,el){
+  sDir=v;[].forEach.call(el.children,function(x){x.className='';x.setAttribute('aria-pressed','false')});b.className='on';b.setAttribute('aria-pressed','true')});
+chipRow(schips,[['ערבוב',0]].concat([2,3,4,5,6,7,8,9,10].map(function(n){return [n,n]})),function(v,b,el){
+  if(v===0){sSel=[];[].forEach.call(el.children,function(x,j){x.className=j?'':'on';x.setAttribute('aria-pressed',j==0)});return}
+  var k=sSel.indexOf(v);if(k<0)sSel.push(v);else sSel.splice(k,1);
+  b.className=k<0?'on':'';b.setAttribute('aria-pressed',k<0);
+  var none=!sSel.length;el.firstChild.className=none?'on':'';el.firstChild.setAttribute('aria-pressed',none)});
+function mixSeq(d,n){
+  var t=2+r(n-4),mx=Math.max(t,n-1-t),hill=r(2)==0,a=[],base=hill?1+mx*d+r(100-mx*d):1+r(100-mx*d);
+  for(var i=0;i<n;i++)a.push(hill?base-Math.abs(i-t)*d:base+Math.abs(i-t)*d);
+  return {a:a,m:1+r(n-2),d:d,mix:hill?'ud':'du'};
+}
+function genSeq(){
+  var steps=sSel.length?sSel:[2,3,4,5,6,7,8,9,10],d=steps[r(steps.length)],n=5+r(3);
+  if(sDir=='m')return mixSeq(d,n);
+  var st=1+r(100-(n-1)*d),a=[];for(var i=0;i<n;i++)a.push(st+i*d);
+  var desc=sDir=='d'||(sDir=='b'&&r(2)==0);if(desc)a.reverse();
+  return {a:a,m:1+r(n-2),d:d,desc:desc};
+}
+function sStart(){
+  sQ=[];for(var i=0;i<10;i++)sQ.push(genSeq());
+  si=0;ss=0;sMissL=[];$('sSetup').hidden=true;$('sDone').hidden=true;$('sQuiz').hidden=false;sShow();
+}
+function sShow(){
+  sLock=false;var q=sQ[si],row=$('seqRow');row.innerHTML='';
+  q.a.forEach(function(v,i){
+    var d=document.createElement('div');
+    if(i==q.m){var inp=document.createElement('input');inp.id='sAns';inp.type='text';inp.inputMode='numeric';inp.autocomplete='off';inp.setAttribute('aria-label','המספר החסר');
+      inp.onkeydown=function(e){if(e.key==='Enter')sCheck()};d.appendChild(inp);d.style.border='none';d.style.padding='0';d.style.background='none'}
+    else d.textContent=v;
+    row.appendChild(d)});
+  $('sqn').textContent='סדרה '+(si+1)+' מתוך '+sQ.length;$('ssc').textContent='נכון: '+ss;
+  $('sbar').style.width=(si/sQ.length*100)+'%';
+  $('sChk').textContent='בדיקה';$('sMsg').textContent='';$('sMsg').className='msg';$('sCard').innerHTML='';$('sAns').focus();
+}
+function sCheck(){
+  if(sLock){si++;if(si>=sQ.length)sFinish();else sShow();return}
+  var q=sQ[si],v=$('sAns').value.trim(),ans=q.a[q.m],m=$('sMsg');
+  if(v===''){m.className='msg no';m.textContent='כתבו מספר ואז לחצו על בדיקה';return}
+  sLock=true;$('sAns').disabled=true;
+  if(parseInt(v,10)===ans){
+    ss++;m.className='msg ok';m.textContent='נכון! כל הכבוד ⭐';
+    var f=pickFact(PK,'kefelPoke'),d=document.createElement('div');d.className='fact pk';
+    var b=document.createElement('b');b.textContent='⚡ טריוויה על פוקימון';
+    var t=document.createElement('span');t.textContent=f.t+' ';d.appendChild(b);d.appendChild(t);
+    var w=document.createElement('div');w.style.marginTop='4px';w.appendChild(document.createTextNode('לקריאה בוויקיפדיה: '));
+    f.l.forEach(function(x,i){if(i)w.appendChild(document.createTextNode(' · '));
+      var a=document.createElement('a');a.href='https://he.wikipedia.org/w/index.php?search='+encodeURIComponent(x)+'&go=Go';a.target='_blank';a.rel='noopener noreferrer';a.textContent=x;w.appendChild(a)});
+    d.appendChild(w);$('sCard').appendChild(d);
+  }else{
+    sMissL.push(q.a.join(', '));m.className='msg no';
+    m.textContent='כמעט! המספר החסר הוא '+ans+'. '+(q.mix?(q.mix=='ud'?'הסדרה עולה ואז יורדת':'הסדרה יורדת ואז עולה'):(q.desc?'הסדרה יורדת':'הסדרה עולה'))+' בקפיצות של '+q.d;
+  }
+  $('ssc').textContent='נכון: '+ss;$('sChk').textContent=si==sQ.length-1?'לסיום':'הסדרה הבאה';$('sChk').focus();
+}
+function sFinish(){
+  $('sQuiz').hidden=true;$('sDone').hidden=false;
+  var n=ss>=9?3:ss>=6?2:ss>=3?1:0;
+  $('sStars').textContent=n?'⭐'.repeat(n):'💪';$('sFinal').textContent=ss+' מתוך '+sQ.length;
+  $('sMissBox').hidden=!sMissL.length;$('sMiss').innerHTML='';
+  sMissL.forEach(function(m){var li=document.createElement('li');li.textContent=m;$('sMiss').appendChild(li)});
+}
+function sBack(){$('sQuiz').hidden=true;$('sDone').hidden=true;$('sSetup').hidden=false}
+</script>
+</body>
+</html>
