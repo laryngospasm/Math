@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Times Table up to 100</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Times Table">
+<meta name="theme-color" content="#eef6ff">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef6ff;--card:#fff;--ink:#1f2a44;--mute:#5d6b8a;--pri:#5b4bdb;--pri-t:#fff;--ok:#1f9d63;--okbg:#d9f5e7;--bad:#d6453d;--badbg:#fde3e1;--sun:#ffc83d;--line:#d5e1f5;--hl:#fff1c2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a2e;--card:#1e2745;--ink:#eef1fb;--mute:#a5b0d0;--pri:#8c7dff;--pri-t:#12102b;--ok:#4fd19a;--okbg:#17382c;--bad:#ff7d75;--badbg:#401c1b;--line:#33406a;--hl:#4a4020}}
+:root[data-theme="dark"]{--bg:#141a2e;--card:#1e2745;--ink:#eef1fb;--mute:#a5b0d0;--pri:#8c7dff;--pri-t:#12102b;--ok:#4fd19a;--okbg:#17382c;--bad:#ff7d75;--badbg:#401c1b;--line:#33406a;--hl:#4a4020}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Rubik',Arial,sans-serif;font-size:18px;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:28px;font-weight:800;margin:8px 0 4px}
+p.sub{margin:0 0 14px;color:var(--mute)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1}
+button{font:inherit;cursor:pointer;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:10px 12px;font-weight:600}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+button.on{background:var(--pri);color:var(--pri-t);border-color:var(--pri)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chips button{min-width:46px}
+.grid{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;direction:ltr}
+.grid button{padding:6px 0;font-size:14px;border-radius:8px;border-width:1px;min-height:34px}
+.grid .h{background:var(--pri);color:var(--pri-t);border-color:var(--pri);font-weight:800}
+.grid .hl{background:var(--hl)}
+.grid .sel{background:var(--sun);color:#1f2a44;border-color:var(--sun);font-weight:800}
+.big{font-size:44px;font-weight:800;text-align:center;direction:ltr;margin:6px 0}
+.eq{display:flex;align-items:center;justify-content:center;gap:10px;direction:ltr;font-size:44px;font-weight:800;margin:14px 0}
+input.ans{width:130px;font:inherit;font-size:40px;font-weight:800;text-align:center;border:3px solid var(--line);border-radius:16px;background:var(--bg);color:var(--ink);padding:4px}
+.go{display:block;margin:0 auto;background:var(--pri);color:var(--pri-t);border-color:var(--pri);font-size:20px;padding:12px 36px}
+.msg{min-height:34px;text-align:center;font-weight:600;margin-top:10px;border-radius:12px;padding:4px 8px}
+.msg.ok{background:var(--okbg);color:var(--ok)}.msg.no{background:var(--badbg);color:var(--bad)}
+.bar{height:12px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;background:var(--sun);width:0;transition:width .3s}
+.stars{font-size:34px;text-align:center;letter-spacing:4px}
+.row{display:flex;justify-content:space-between;color:var(--mute);font-size:16px}
+ul.miss{list-style:none;padding:0;margin:8px 0;display:flex;flex-wrap:wrap;gap:8px}
+ul.miss li{direction:ltr;background:var(--badbg);color:var(--bad);border-radius:10px;padding:4px 10px;font-weight:600}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+.lang{float:right;color:var(--pri);font-weight:600;font-size:16px;text-decoration:none;padding:8px 0}
+.back{display:block;margin:14px auto 0;font-size:16px;padding:8px 18px}
+.seq{display:flex;gap:6px;direction:ltr;justify-content:center;margin:14px 0}
+.seq>div{flex:1;min-width:0;max-width:78px;text-align:center;font-size:clamp(18px,5.5vw,30px);font-weight:800;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:10px 0}
+.seq input{width:100%;font:inherit;font-weight:800;text-align:center;border:3px solid var(--sun);border-radius:12px;background:var(--card);color:var(--ink);padding:0;min-width:0}
+.fact.pk{border-inline-start-color:var(--sun)}
+.fact{background:var(--bg);border:2px solid var(--line);border-inline-start:8px solid var(--ok);border-radius:14px;padding:10px 14px;margin-top:12px;animation:pop .3s ease-out}
+.fact b{display:block}
+.fact a{color:var(--pri);font-weight:600}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.fact{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<a class="lang" href="../" hreflang="he" lang="he">עברית</a>
+<h1>Times Table up to 100</h1>
+<p class="sub">First look at the table, then practice!</p>
+<div class="tabs" role="tablist">
+  <button id="t1" class="on" onclick="tab(1)">Table</button>
+  <button id="t2" onclick="tab(2)">Practice</button>
+  <button id="t3" onclick="tab(3)">Sequences</button>
+</div>
+
+<section id="p1">
+  <div class="card">
+    <div class="big" id="eqShow">Tap a number in the table</div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="p2" hidden>
+  <div class="card" id="setup">
+    <b>What kind of problems?</b>
+    <div class="chips" id="modes"></div>
+    <b>Which times table?</b>
+    <div class="chips" id="chips"></div>
+    <button class="go" onclick="start()">Let's go</button>
+  </div>
+  <div class="card" id="quiz" hidden>
+    <div class="row"><span id="qn"></span><span id="sc"></span></div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="eq"><span id="qa"></span><span id="qop">×</span><span id="qb"></span><span>=</span>
+      <input class="ans" id="ans" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Answer"></div>
+    <button class="go" id="chk" onclick="check()">Check</button>
+    <div class="msg" id="msg" aria-live="polite"></div>
+    <div id="cardBox"></div>
+    <button class="back" onclick="again()">Back to practice menu</button>
+  </div>
+  <div class="card" id="done" hidden>
+    <div class="stars" id="stars"></div>
+    <div class="big" id="final"></div>
+    <div id="missBox" hidden><b>Worth reviewing:</b><ul class="miss" id="miss"></ul></div>
+    <button class="go" onclick="again()">Another round</button>
+  </div>
+</section>
+
+<section id="p3" hidden>
+  <div class="card" id="sSetup">
+    <b>Which sequence?</b>
+    <div class="chips" id="sdir"></div>
+    <b>What step size?</b>
+    <div class="chips" id="schips"></div>
+    <button class="go" onclick="sStart()">Let's go</button>
+  </div>
+  <div class="card" id="sQuiz" hidden>
+    <div class="row"><span id="sqn"></span><span id="ssc"></span></div>
+    <div class="bar"><i id="sbar"></i></div>
+    <div>Fill in the missing number in the sequence</div>
+    <div class="seq" id="seqRow"></div>
+    <button class="go" id="sChk" onclick="sCheck()">Check</button>
+    <div class="msg" id="sMsg" aria-live="polite"></div>
+    <div id="sCard"></div>
+    <button class="back" onclick="sBack()">Back to sequences menu</button>
+  </div>
+  <div class="card" id="sDone" hidden>
+    <div class="stars" id="sStars"></div>
+    <div class="big" id="sFinal"></div>
+    <div id="sMissBox" hidden><b>Worth reviewing these sequences:</b><ul class="miss" id="sMiss"></ul></div>
+    <button class="go" onclick="sBack()">Another round</button>
+  </div>
+</section>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)};
+function tab(n){for(var i=1;i<=3;i++){$('p'+i).hidden=n!=i;$('t'+i).className=n==i?'on':''}}
+
+// ---- table
+var g=$('grid'),cells={};
+(function(){
+  var h=document.createElement('button');h.className='h';h.textContent='×';h.disabled=true;g.appendChild(h);
+  for(var c=1;c<=10;c++){var b=document.createElement('button');b.className='h';b.textContent=c;b.disabled=true;g.appendChild(b)}
+  for(var r=1;r<=10;r++){
+    var rh=document.createElement('button');rh.className='h';rh.textContent=r;rh.disabled=true;g.appendChild(rh);
+    for(var c=1;c<=10;c++){(function(r,c){
+      var b=document.createElement('button');b.textContent=r*c;b.setAttribute('aria-label',r+' times '+c+' equals '+r*c);
+      b.onclick=function(){pick(r,c)};cells[r+'_'+c]=b;g.appendChild(b)})(r,c)}
+  }
+})();
+function pick(r,c){
+  for(var k in cells){cells[k].className=''}
+  for(var i=1;i<=10;i++){cells[r+'_'+i].className='hl';cells[i+'_'+c].className='hl'}
+  cells[r+'_'+c].className='sel';
+  $('eqShow').textContent=r+' × '+c+' = '+r*c;
+}
+
+// ---- practice
+var chosen=[],chips=$('chips');
+function mk(label,val){
+  var b=document.createElement('button');b.textContent=label;b.setAttribute('aria-pressed','false');
+  b.onclick=function(){
+    if(val==0){chosen=[];[].forEach.call(chips.children,function(x){x.className='';x.setAttribute('aria-pressed','false')});
+      b.className='on';b.setAttribute('aria-pressed','true');chosen=[0];return}
+    chosen=chosen.filter(function(x){return x!=0});chips.firstChild.className='';
+    var i=chosen.indexOf(val);
+    if(i<0){chosen.push(val);b.className='on'}else{chosen.splice(i,1);b.className=''}
+    b.setAttribute('aria-pressed',i<0)};
+  chips.appendChild(b);
+}
+mk('Mix',0);for(var n=2;n<=10;n++)mk(n,n);
+
+var FACTS=[{"w": "Lionel Messi", "t": "Lionel Messi of Argentina won the 2022 World Cup and has won the Ballon d'Or eight times."}, {"w": "Cristiano Ronaldo", "t": "Cristiano Ronaldo of Portugal has scored more than 900 official goals in his career."}, {"w": "Pelé", "t": "Brazil's Pelé won the World Cup three times: in 1958, 1962 and 1970."}, {"w": "Diego Maradona", "t": "Diego Maradona led Argentina to the 1986 World Cup. His famous goal against England is called the “Hand of God”."}, {"w": "Eran Zahavi", "t": "Eran Zahavi is the all-time top scorer of the Israel national team."}, {"w": "Mordechai Spiegler", "t": "Mordechai Spiegler played at the 1970 World Cup in Mexico, the only time Israel has played in the tournament."}, {"w": "Manor Solomon", "t": "Israeli winger Manor Solomon has played for big European clubs such as Tottenham in England."}, {"w": "Yossi Benayoun", "t": "Israel's Yossi Benayoun played for some of England's biggest clubs: Liverpool, Chelsea and Arsenal."}, {"w": "Eli Ohana", "t": "Eli Ohana, a Beitar Jerusalem legend, won the 1988 European Cup Winners' Cup with Mechelen of Belgium."}, {"w": "Haim Revivo", "t": "Israeli footballer Haim Revivo played in Spain for Celta Vigo and in Turkey for Fenerbahçe."}, {"w": "Tal Ben Haim", "t": "Israeli defender Tal Ben Haim played for Chelsea in England."}, {"w": "Mohamed Salah", "t": "Egypt's Mohamed Salah is a Liverpool star and has won the English league title with them."}, {"w": "Kylian Mbappé", "t": "France's Kylian Mbappé won the 2018 World Cup at the age of 19 and scored three goals in the 2022 final."}, {"w": "Neymar", "t": "Brazil's Neymar passed Pelé to become the top scorer in the history of the Brazil national team."}, {"w": "Miroslav Klose", "t": "Germany's Miroslav Klose is the top scorer in World Cup history, with 16 goals."}, {"w": "Lev Yashin", "t": "Soviet Union goalkeeper Lev Yashin is the only goalkeeper to have won the Ballon d'Or."}, {"w": "Luka Modrić", "t": "Croatia's Luka Modrić led his country to the 2018 World Cup final and won the Ballon d'Or."}, {"w": "Marta (footballer)", "t": "Brazil's Marta scored 17 goals at World Cups, a record among all women."}, {"w": "Johan Cruyff", "t": "Dutchman Johan Cruyff invented a famous dribbling move that is named after him: the “Cruyff turn”."}, {"w": "Zinedine Zidane", "t": "France's Zinedine Zidane scored two headers in the 1998 World Cup final, and France beat Brazil."}, {"w": "Ronaldinho", "t": "Brazil's Ronaldinho won the 2002 World Cup and the 2005 Ballon d'Or."}, {"w": "Andrés Iniesta", "t": "Spain's Andrés Iniesta scored the winning goal in the 2010 World Cup final."}, {"w": "Gianluigi Buffon", "t": "Italian goalkeeper Gianluigi Buffon played until the age of 45 and won the 2006 World Cup."}, {"w": "Franz Beckenbauer", "t": "Germany's Franz Beckenbauer won the World Cup both as a player (1974) and as a coach (1990)."}, {"w": "Erling Haaland", "t": "Norway's Erling Haaland scored 36 goals in a single English Premier League season (2022/23), a record."}, {"w": "Lamine Yamal", "t": "Spain's Lamine Yamal won the 2024 European Championship with Spain when he was just 17."}, {"w": "1964 AFC Asian Cup", "t": "The Israel national team won the 1964 Asian Cup, when the tournament was held in Israel."}, {"w": "Just Fontaine", "t": "France's Just Fontaine scored 13 goals at a single World Cup (1958), a record that still stands."}, {"w": "Ferenc Puskás", "t": "Hungary's Ferenc Puskás scored 84 goals in 85 games for the Hungarian national team."}, {"w": "George Weah", "t": "George Weah of Liberia won the Ballon d'Or in 1995 and later became president of Liberia."}, {"w": "Karim Benzema", "t": "France's Karim Benzema won the Ballon d'Or in 2022 with Real Madrid."}, {"w": "Robert Lewandowski", "t": "Poland's Robert Lewandowski scored 5 goals in just 9 minutes in a single Bayern Munich game."}, {"w": "Son Heung-min", "t": "South Korea's Son Heung-min won the Premier League Golden Boot in 2021/22 with 23 goals."}],seen=[],lastW='';
+try{seen=JSON.parse(localStorage.getItem('kefelSeenEn')||'[]')}catch(e){}
+function showCard(q){
+  var left=FACTS.filter(function(f){return seen.indexOf(f.w)<0});
+  if(!left.length){seen=[];left=FACTS.filter(function(f){return f.w!==lastW})}
+  var f=left[Math.floor(Math.random()*left.length)];
+  seen.push(f.w);lastW=f.w;
+  try{localStorage.setItem('kefelSeenEn',JSON.stringify(seen))}catch(e){}
+  $('cardBox').innerHTML='';
+  var d=document.createElement('div');d.className='fact';
+  var b=document.createElement('b');b.textContent='⚽ Did you know?';
+  var t=document.createElement('span');t.textContent=f.t+' ';
+  var a=document.createElement('a');a.href='https://en.wikipedia.org/w/index.php?search='+encodeURIComponent(f.w)+'&go=Go';a.target='_blank';a.rel='noopener noreferrer';a.textContent='Read on Wikipedia';
+  d.appendChild(b);d.appendChild(t);d.appendChild(a);$('cardBox').appendChild(d);
+}
+function shuf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var mode='m',modes=$('modes');
+[['m','Multiplication ×'],['d','Division ÷'],['b','Both']].forEach(function(o){
+  var b=document.createElement('button');b.textContent=o[1];b.className=o[0]=='m'?'on':'';b.setAttribute('aria-pressed',o[0]=='m');
+  b.onclick=function(){mode=o[0];[].forEach.call(modes.children,function(x){x.className='';x.setAttribute('aria-pressed','false')});b.className='on';b.setAttribute('aria-pressed','true')};
+  modes.appendChild(b)});
+var Q=[],qi=0,score=0,miss=[],locked=false;
+function start(){
+  var pool=(chosen.length==0||chosen[0]==0)?[2,3,4,5,6,7,8,9,10]:chosen;
+  var all=[];pool.forEach(function(a){for(var b=1;b<=10;b++)all.push([a,b])});
+  Q=shuf(all).slice(0,10).map(function(p){
+    if(Math.random()<.5)p=[p[1],p[0]];
+    var div=mode=='d'||(mode=='b'&&Math.random()<.5);
+    return div?{a:p[0]*p[1],op:'÷',b:p[0],ans:p[1]}:{a:p[0],op:'×',b:p[1],ans:p[0]*p[1]}});
+  qi=0;score=0;miss=[];
+  $('setup').hidden=true;$('done').hidden=true;$('quiz').hidden=false;show();
+}
+function show(){
+  locked=false;var q=Q[qi];
+  $('qa').textContent=q.a;$('qop').textContent=q.op;$('qb').textContent=q.b;
+  $('qn').textContent='Question '+(qi+1)+' of '+Q.length;$('sc').textContent='Correct: '+score;
+  $('bar').style.width=(qi/Q.length*100)+'%';
+  $('ans').value='';$('ans').disabled=false;$('chk').textContent='Check';
+  $('msg').textContent='';$('msg').className='msg';$('cardBox').innerHTML='';$('ans').focus();
+}
+function check(){
+  if(locked){qi++;if(qi>=Q.length)finish();else show();return}
+  var q=Q[qi],v=$('ans').value.trim();
+  if(v===''){$('msg').className='msg no';$('msg').textContent='Type an answer, then press Check';return}
+  locked=true;$('ans').disabled=true;
+  if(parseInt(v,10)===q.ans){score++;$('msg').className='msg ok';$('msg').textContent='Correct! Well done ⭐';showCard(q)}
+  else{miss.push(q.a+' '+q.op+' '+q.b+' = '+q.ans);$('msg').className='msg no';$('msg').textContent='Almost! The answer is '+q.ans}
+  $('sc').textContent='Correct: '+score;
+  $('chk').textContent=qi==Q.length-1?'Finish':'Next question';$('chk').focus();
+}
+$('ans').addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+function finish(){
+  $('quiz').hidden=true;$('done').hidden=false;
+  var n=score>=9?3:score>=6?2:score>=3?1:0;
+  $('stars').textContent=n?'⭐'.repeat(n):'💪';
+  $('final').textContent=score+' of '+Q.length;
+  $('missBox').hidden=!miss.length;
+  $('miss').innerHTML='';miss.forEach(function(m){var li=document.createElement('li');li.textContent=m;$('miss').appendChild(li)});
+}
+function again(){$('quiz').hidden=true;$('done').hidden=true;$('setup').hidden=false}
+
+// ---- sequences
+var PK=[{"t": "The name “Pokémon” is short for “Pocket Monsters” in Japanese.", "l": ["Pokémon"]}, {"t": "The first Pokémon games came out in Japan in 1996. Their creator, Satoshi Tajiri, loved collecting insects as a child.", "l": ["Pokémon", "Satoshi Tajiri"]}, {"t": "The first generation had 151 Pokémon. Bulbasaur is number 1 in the Pokédex, and Mew is number 151.", "l": ["Bulbasaur", "Mew (Pokémon)"]}, {"t": "Magikarp is considered a weak Pokémon, but at level 20 it evolves into the powerful Gyarados.", "l": ["Magikarp", "Gyarados"]}, {"t": "Eevee can evolve into eight different forms, including Vaporeon, Jolteon and Flareon.", "l": ["Eevee", "Vaporeon", "Jolteon", "Flareon"]}, {"t": "Pikachu evolves from Pichu and can later become Raichu.", "l": ["Pikachu", "Pichu", "Raichu"]}, {"t": "The name Pikachu combines “pika”, the Japanese sound of an electric spark, and “chu”, the squeak of a mouse.", "l": ["Pikachu"]}, {"t": "There are 18 types of Pokémon, such as Fire, Water, Grass and Electric.", "l": ["Pokémon"]}, {"t": "Fire beats Grass, Grass beats Water, and Water beats Fire.", "l": ["Pokémon"]}, {"t": "Ditto is a Pokémon that can transform into any other Pokémon.", "l": ["Ditto (Pokémon)"]}, {"t": "Mewtwo was created in a laboratory from the DNA of Mew.", "l": ["Mewtwo", "Mew (Pokémon)"]}, {"t": "Snorlax loves to sleep, and in the games it can block an entire path until someone wakes it up.", "l": ["Snorlax"]}, {"t": "The Pokémon TV series began in Japan in 1997. Ash is 10 years old, and his journey starts in Pallet Town.", "l": ["Pokémon", "Ash Ketchum"]}, {"t": "Pokémon GO came out in 2016 and sent millions of people out to look for Pokémon on the streets.", "l": ["Pokémon Go"]}, {"t": "The second-generation games, Gold and Silver, added 100 new Pokémon.", "l": ["Pokémon Gold and Silver"]}, {"t": "Pokémon cards were first released in Japan in 1996.", "l": ["Pokémon Trading Card Game"]}, {"t": "The three starter Pokémon of the first generation are Bulbasaur, Charmander and Squirtle.", "l": ["Bulbasaur", "Charmander", "Squirtle"]}, {"t": "The flame at the tip of Charmander's tail shows how strong and healthy it is.", "l": ["Charmander"]}, {"t": "Jigglypuff sings a song that puts anyone who listens to sleep.", "l": ["Jigglypuff"]}, {"t": "Wailord, one of the largest Pokémon, is about 14.5 meters long.", "l": ["Wailord"]}, {"t": "A Pokémon World Championship is held every year.", "l": ["Pokémon"]}, {"t": "Three legendary birds in the first generation: Articuno of ice, Zapdos of electricity and Moltres of fire.", "l": ["Articuno", "Zapdos", "Moltres"]}, {"t": "There are several kinds of balls in Pokémon: Poké Ball, Great Ball and Ultra Ball. The Master Ball catches any Pokémon without fail.", "l": ["Poké Ball"]}],memSeen={};
+function pickFact(pool,key){
+  var seen=memSeen[key];
+  if(!seen){try{seen=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){seen=[]}}
+  var left=[];pool.forEach(function(_,i){if(seen.indexOf(i)<0)left.push(i)});
+  if(!left.length){var last=seen[seen.length-1];seen=[];pool.forEach(function(_,i){if(i!==last)left.push(i)})}
+  var i=left[Math.floor(Math.random()*left.length)];seen.push(i);memSeen[key]=seen;
+  try{localStorage.setItem(key,JSON.stringify(seen))}catch(e){}
+  return pool[i];
+}
+function r(k){return Math.floor(Math.random()*k)}
+function chipRow(el,labels,onPick,multi){
+  labels.forEach(function(l,i){
+    var b=document.createElement('button');b.textContent=l[0];b.className=i==0?'on':'';b.setAttribute('aria-pressed',i==0);
+    b.onclick=function(){onPick(l[1],b,el)};el.appendChild(b)});
+}
+var sDir='u',sSel=[],sQ=[],si=0,ss=0,sLock=false,sMissL=[];
+var sdir=$('sdir'),schips=$('schips');
+chipRow(sdir,[['Ascending','u'],['Descending','d'],['Both','b'],['Mixed','m']],function(v,b,el){
+  sDir=v;[].forEach.call(el.children,function(x){x.className='';x.setAttribute('aria-pressed','false')});b.className='on';b.setAttribute('aria-pressed','true')});
+chipRow(schips,[['Mix',0]].concat([2,3,4,5,6,7,8,9,10].map(function(n){return [n,n]})),function(v,b,el){
+  if(v===0){sSel=[];[].forEach.call(el.children,function(x,j){x.className=j?'':'on';x.setAttribute('aria-pressed',j==0)});return}
+  var k=sSel.indexOf(v);if(k<0)sSel.push(v);else sSel.splice(k,1);
+  b.className=k<0?'on':'';b.setAttribute('aria-pressed',k<0);
+  var none=!sSel.length;el.firstChild.className=none?'on':'';el.firstChild.setAttribute('aria-pressed',none)});
+function mixSeq(d,n){
+  var t=2+r(n-4),mx=Math.max(t,n-1-t),hill=r(2)==0,a=[],base=hill?1+mx*d+r(100-mx*d):1+r(100-mx*d);
+  for(var i=0;i<n;i++)a.push(hill?base-Math.abs(i-t)*d:base+Math.abs(i-t)*d);
+  return {a:a,m:1+r(n-2),d:d,mix:hill?'ud':'du'};
+}
+function genSeq(){
+  var steps=sSel.length?sSel:[2,3,4,5,6,7,8,9,10],d=steps[r(steps.length)],n=5+r(3);
+  if(sDir=='m')return mixSeq(d,n);
+  var st=1+r(100-(n-1)*d),a=[];for(var i=0;i<n;i++)a.push(st+i*d);
+  var desc=sDir=='d'||(sDir=='b'&&r(2)==0);if(desc)a.reverse();
+  return {a:a,m:1+r(n-2),d:d,desc:desc};
+}
+function sStart(){
+  sQ=[];for(var i=0;i<10;i++)sQ.push(genSeq());
+  si=0;ss=0;sMissL=[];$('sSetup').hidden=true;$('sDone').hidden=true;$('sQuiz').hidden=false;sShow();
+}
+function sShow(){
+  sLock=false;var q=sQ[si],row=$('seqRow');row.innerHTML='';
+  q.a.forEach(function(v,i){
+    var d=document.createElement('div');
+    if(i==q.m){var inp=document.createElement('input');inp.id='sAns';inp.type='text';inp.inputMode='numeric';inp.autocomplete='off';inp.setAttribute('aria-label','The missing number');
+      inp.onkeydown=function(e){if(e.key==='Enter')sCheck()};d.appendChild(inp);d.style.border='none';d.style.padding='0';d.style.background='none'}
+    else d.textContent=v;
+    row.appendChild(d)});
+  $('sqn').textContent='Sequence '+(si+1)+' of '+sQ.length;$('ssc').textContent='Correct: '+ss;
+  $('sbar').style.width=(si/sQ.length*100)+'%';
+  $('sChk').textContent='Check';$('sMsg').textContent='';$('sMsg').className='msg';$('sCard').innerHTML='';$('sAns').focus();
+}
+function sCheck(){
+  if(sLock){si++;if(si>=sQ.length)sFinish();else sShow();return}
+  var q=sQ[si],v=$('sAns').value.trim(),ans=q.a[q.m],m=$('sMsg');
+  if(v===''){m.className='msg no';m.textContent='Type a number, then press Check';return}
+  sLock=true;$('sAns').disabled=true;
+  if(parseInt(v,10)===ans){
+    ss++;m.className='msg ok';m.textContent='Correct! Well done ⭐';
+    var f=pickFact(PK,'kefelPokeEn'),d=document.createElement('div');d.className='fact pk';
+    var b=document.createElement('b');b.textContent='⚡ Pokémon trivia';
+    var t=document.createElement('span');t.textContent=f.t+' ';d.appendChild(b);d.appendChild(t);
+    var w=document.createElement('div');w.style.marginTop='4px';w.appendChild(document.createTextNode('Read on Wikipedia: '));
+    f.l.forEach(function(x,i){if(i)w.appendChild(document.createTextNode(' · '));
+      var a=document.createElement('a');a.href='https://en.wikipedia.org/w/index.php?search='+encodeURIComponent(x)+'&go=Go';a.target='_blank';a.rel='noopener noreferrer';a.textContent=x;w.appendChild(a)});
+    d.appendChild(w);$('sCard').appendChild(d);
+  }else{
+    sMissL.push(q.a.join(', '));m.className='msg no';
+    m.textContent='Almost! The missing number is '+ans+'. '+(q.mix?(q.mix=='ud'?'The sequence goes up, then down':'The sequence goes down, then up'):(q.desc?'The sequence goes down':'The sequence goes up'))+' in steps of '+q.d;
+  }
+  $('ssc').textContent='Correct: '+ss;$('sChk').textContent=si==sQ.length-1?'Finish':'Next sequence';$('sChk').focus();
+}
+function sFinish(){
+  $('sQuiz').hidden=true;$('sDone').hidden=false;
+  var n=ss>=9?3:ss>=6?2:ss>=3?1:0;
+  $('sStars').textContent=n?'⭐'.repeat(n):'💪';$('sFinal').textContent=ss+' of '+sQ.length;
+  $('sMissBox').hidden=!sMissL.length;$('sMiss').innerHTML='';
+  sMissL.forEach(function(m){var li=document.createElement('li');li.textContent=m;$('sMiss').appendChild(li)});
+}
+function sBack(){$('sQuiz').hidden=true;$('sDone').hidden=true;$('sSetup').hidden=false}
+</script>
+</body>
+</html>
